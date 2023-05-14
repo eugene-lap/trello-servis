@@ -17,7 +17,7 @@ class authController {
         try {
             const errors = validationResult(req)
             if(!errors.isEmpty()){
-                return res.status(400).json({message: "Ошибка при регистрации", errors})
+                return res.status(400).json({message: "Поля не должны быть пустыми", errors})
             }
             const {username, email, password} = req.body
             const candidate = await User.findOne({username})
@@ -35,6 +35,10 @@ class authController {
     async login(req, res){
         try {
             const {username, password} = req.body
+            const errors = validationResult(req)
+            if(!errors.isEmpty()){
+                return res.status(400).json({message: "Поля не должны быть пустыми", errors})
+            }
             const user = await User.findOne({username})
             if(!user){
                 return res.status(400).json({message: `Пользователь ${username} не найден`})
